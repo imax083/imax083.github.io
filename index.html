@@ -262,10 +262,6 @@
         <span class="summary-label">IMEI</span>
         <span class="summary-value" id="summaryImei">—</span>
       </div>
-      <div class="summary-row">
-        <span class="summary-label">Activation Lock</span>
-        <span class="summary-value" id="summaryLock" style="color: var(--red);">—</span>
-      </div>
     </div>
 
     <!-- FINAL STEP BUTTON -->
@@ -463,7 +459,7 @@
         thinProgressWrap.classList.add('hidden');
         thinProgress.style.width = '0%';
 
-        cmdLine1.textContent = `activation_lock --imei ${imeiValue} --model "${selectedModel}"`;
+        cmdLine1.textContent = `bypass_activation_lock --imei ${imeiValue} --model "${selectedModel}"`;
         cmdLine2.textContent = `> connecting to Apple server ...`;
         cmdLine2.className = 'cmd-text cmd-info';
 
@@ -501,7 +497,7 @@
           thinProgress.style.width = '100%';
           statusMsg.textContent = '✅ command completed';
 
-          cmdLine1.textContent = `activation_lock --imei ${imeiValue} --model "${selectedModel}"`;
+          cmdLine1.textContent = `bypass_activation_lock --imei ${imeiValue} --model "${selectedModel}"`;
           cmdLine2.textContent = `✅ done · activation lock is ${selectedLock === 'enabled' ? 'ENABLED 🔒' : 'DISABLED 🔓'}`;
           cmdLine2.className = 'cmd-text cmd-success';
 
