@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>iMax · Activation Lock</title>
+  <title>iMax · Bypass Activation Lock</title>
   <style>
     :root {
       --bg: #f2f2f7;
@@ -193,7 +193,7 @@
     <div class="notch"></div>
 
     <h1>iMax · Unlocker</h1>
-    <div class="sub">Activation unlocker · iPhone 6 → 18 Pro Max</div>
+    <div class="sub">Bypass Activation lock · iPhone 6 → 18 Pro Max</div>
 
     <!-- STEP 1 : iPhone model (wrapped for easy hide) -->
     <div id="stepModelWrap">
@@ -261,6 +261,10 @@
       <div class="summary-row">
         <span class="summary-label">IMEI</span>
         <span class="summary-value" id="summaryImei">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Activation Lock</span>
+        <span class="summary-value" id="summaryLock" style="color: var(--red);">—</span>
       </div>
     </div>
 
@@ -527,10 +531,15 @@
         }, TOTAL_MS);
       });
 
+      // FINAL BUTTON — open Google.com then reset
       finalBtn.addEventListener('click', () => {
-        jokeMsg.textContent = '🎉 All steps completed. You\'re done!';
+        // open Google in a new tab
+        window.open('https://www.google.com', '_blank');
+
+        jokeMsg.textContent = '🎉 All steps completed. Opening Google...';
         jokeMsg.classList.add('show');
 
+        // reset after a short delay
         setTimeout(() => {
           resetToInitial();
         }, 800);
