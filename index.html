@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>iCheck · Activation Lock</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --text: #1c1c1e;
+      --sub: #8e8e93;
+      --blue: #007aff;
+      --green: #34c759;
+      --red: #ff3b30;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#000; --card:#1c1c1e; --text:#f2f2f7; --sub:#8e8e93; }
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+    }
+    .phone {
+      width: 340px; background: var(--card); border-radius: 44px;
+      padding: 28px 24px 32px; box-shadow: 0 24px 60px rgba(0,0,0,.18);
+      position: relative;
+    }
+    .notch {
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 90px; height: 22px; background: #000; border-radius: 12px;
+    }
+    h1 { font-size: 22px; font-weight: 700; margin: 28px 0 4px; letter-spacing: -.4px; }
+    .sub { color: var(--sub); font-size: 13px; margin-bottom: 22px; line-height: 1.4; }
+    .row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 0; border-bottom: .5px solid rgba(128,128,128,.25); font-size: 15px;
+    }
+    .row:last-of-type { border-bottom: none; }
+    .val { color: var(--sub); font-size: 14px; }
+    .btn {
+      width: 100%; margin-top: 22px; padding: 15px; border: none; border-radius: 14px;
+      background: var(--blue); color: #fff; font-size: 16px; font-weight: 600;
+      cursor: pointer; transition: transform .1s, opacity .2s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .5; cursor: default; }
+    .bar-wrap { margin-top: 20px; height: 6px; border-radius: 3px; background: rgba(128,128,128,.2); overflow: hidden; }
+    .bar { height: 100%; width: 0%; background: var(--blue); transition: width .35s ease; }
+    .status { margin-top: 10px; font-size: 12px; color: var(--sub); text-align: center; min-height: 16px; }
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .5px;
+      background: var(--red); color: #fff; padding: 3px 7px; border-radius: 6px;
+      vertical-align: middle; margin-left: 6px;
+    }
+    .joke {
+      margin-top: 18px; font-size: 13px; line-height: 1.5; text-align: center;
+      color: var(--text); display: none;
+    }
+    .joke.show { display: block; animation: pop .3s ease; }
+    @keyframes pop { from { opacity:0; transform: translateY(6px);} to {opacity:1; transform:none;} }
+
+    select, input {
+      width: 100%; padding: 14px 16px; margin: 6px 0 4px;
+      border-radius: 14px; border: .5px solid rgba(128,128,128,.3);
+      background: var(--card); color: var(--text);
+      font-size: 15px; font-family: inherit;
+      outline: none; transition: border .2s, box-shadow .2s;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238e8e93' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 12px;
+    }
+    select:focus, input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,122,255,.15);
+    }
+    input[type="text"] {
+      background-image: none;
+    }
+    .hidden { display: none !important; }
+
+    .cmd-box {
+      margin-top: 16px;
+      background: #1a1a1e;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: "SF Mono", "Menlo", "Courier New", monospace;
+      font-size: 12px;
+      color: #eaeaea;
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 110px;
+      overflow-y: auto;
+    }
+    .cmd-line {
+      display: flex;
+      gap: 8px;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+    .cmd-prompt {
+      color: var(--green);
+      font-weight: 600;
+    }
+    .cmd-text {
+      color: #d4d4d8;
+      word-break: break-all;
+      white-space: normal;
+    }
+    .cmd-success {
+      color: var(--green);
+    }
+    .cmd-info {
+      color: #8e8e93;
+    }
+
+    .progress-wrap {
+      margin-top: 6px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(128,128,128,.2);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--green);
+      transition: width .2s linear;
+    }
+
+    .done-btn {
+      background: var(--green) !important;
+      margin-top: 8px;
+    }
+    .done-btn:disabled {
+      opacity: .7;
+    }
+
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mb-4 { margin-bottom: 4px; }
+
+    .summary-box {
+      background: rgba(0,122,255,.06);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-top: 16px;
+      border: 1px solid rgba(0,122,255,.15);
+    }
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 6px 0;
+    }
+    .summary-row:not(:last-child) {
+      border-bottom: .5px solid rgba(128,128,128,.15);
+    }
+    .summary-label {
+      color: var(--sub);
+      font-weight: 400;
+    }
+    .summary-value {
+      font-weight: 600;
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 13px;
+      color: var(--text);
+      max-width: 65%;
+      text-align: right;
+      word-break: break-all;
+    }
+    .summary-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+
+    <h1>iCheck · Lock</h1>
+    <div class="sub">Check activation lock status · iPhone 6 → 18 Pro Max</div>
+
+    <!-- STEP 1 : iPhone model (wrapped for easy hide) -->
+    <div id="stepModelWrap">
+      <div class="row" style="border-bottom: none; padding-bottom: 0;">
+        <span>📱 iPhone model</span>
+        <span class="val" id="modelDisplay">—</span>
+      </div>
+      <select id="modelSelect" aria-label="iPhone model">
+        <option value="" disabled selected>Select your iPhone</option>
+      </select>
+    </div>
+
+    <!-- STEP 2 : Activation Lock -->
+    <div id="lockSection" class="hidden">
+      <div class="row" style="border-bottom: none; padding-bottom: 0; margin-top: 6px;">
+        <span>🔒 Activation Lock</span>
+        <span class="val" id="lockDisplay">—</span>
+      </div>
+      <select id="lockSelect" aria-label="Activation Lock status">
+        <option value="" disabled selected>Select lock status</option>
+        <option value="enabled">Enabled</option>
+        <option value="disabled">Disabled</option>
+      </select>
+    </div>
+
+    <!-- STEP 3 : IMEI + Start -->
+    <div id="imeiSection" class="hidden">
+      <div class="row" style="border-bottom: none; padding-bottom: 0; margin-top: 6px;">
+        <span>🔢 IMEI</span>
+        <span class="val" id="imeiDisplay">—</span>
+      </div>
+      <input type="text" id="imeiInput" placeholder="Enter 15-digit IMEI" maxlength="15" inputmode="numeric" autocomplete="off">
+      <button class="btn" id="startBtn" disabled>Start check</button>
+    </div>
+
+    <!-- RUN SECTION (cmd + progress) -->
+    <div id="runSection" class="hidden">
+      <div class="cmd-box" id="cmdBox">
+        <div class="cmd-line">
+          <span class="cmd-prompt">$</span>
+          <span class="cmd-text" id="cmdLine1">waiting for command...</span>
+        </div>
+        <div class="cmd-line">
+          <span class="cmd-prompt">></span>
+          <span class="cmd-text cmd-info" id="cmdLine2"></span>
+        </div>
+      </div>
+
+      <div class="bar-wrap" style="margin-top: 12px;">
+        <div class="bar" id="progressBar" style="width:0%; background: var(--green);"></div>
+      </div>
+      <div class="status" id="statusMsg">⏳ running command ...</div>
+      <div class="progress-wrap hidden" id="thinProgressWrap">
+        <div class="progress-fill" id="thinProgress"></div>
+      </div>
+    </div>
+
+    <!-- SUMMARY BOX (model + IMEI) — appears after 30s before done -->
+    <div id="summaryBox" class="summary-box hidden">
+      <div class="summary-title">📋 Your device</div>
+      <div class="summary-row">
+        <span class="summary-label">Model</span>
+        <span class="summary-value" id="summaryModel">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">IMEI</span>
+        <span class="summary-value" id="summaryImei">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Activation Lock</span>
+        <span class="summary-value" id="summaryLock" style="color: var(--red);">—</span>
+      </div>
+    </div>
+
+    <!-- FINAL STEP BUTTON -->
+    <button class="btn done-btn hidden" id="finalBtn" disabled>You're Done</button>
+
+    <!-- JOKE / RESULT MESSAGE -->
+    <div class="joke" id="jokeMsg"></div>
+  </div>
+
+  <script>
+    (function() {
+      const iPhoneModels = [
+        "iPhone 6", "iPhone 6 Plus", "iPhone 6s", "iPhone 6s Plus",
+        "iPhone SE (1st gen)",
+        "iPhone 7", "iPhone 7 Plus",
+        "iPhone 8", "iPhone 8 Plus",
+        "iPhone X",
+        "iPhone XR", "iPhone XS", "iPhone XS Max",
+        "iPhone 11", "iPhone 11 Pro", "iPhone 11 Pro Max",
+        "iPhone SE (2nd gen)",
+        "iPhone 12 mini", "iPhone 12", "iPhone 12 Pro", "iPhone 12 Pro Max",
+        "iPhone 13 mini", "iPhone 13", "iPhone 13 Pro", "iPhone 13 Pro Max",
+        "iPhone SE (3rd gen)",
+        "iPhone 14", "iPhone 14 Plus", "iPhone 14 Pro", "iPhone 14 Pro Max",
+        "iPhone 15", "iPhone 15 Plus", "iPhone 15 Pro", "iPhone 15 Pro Max",
+        "iPhone 16", "iPhone 16 Plus", "iPhone 16 Pro", "iPhone 16 Pro Max",
+        "iPhone 17", "iPhone 17 Plus", "iPhone 17 Pro", "iPhone 17 Pro Max",
+        "iPhone 18", "iPhone 18 Plus", "iPhone 18 Pro", "iPhone 18 Pro Max"
+      ];
+
+      const modelSelect = document.getElementById('modelSelect');
+      const lockSection = document.getElementById('lockSection');
+      const lockSelect = document.getElementById('lockSelect');
+      const imeiSection = document.getElementById('imeiSection');
+      const imeiInput = document.getElementById('imeiInput');
+      const startBtn = document.getElementById('startBtn');
+      const runSection = document.getElementById('runSection');
+      const cmdLine1 = document.getElementById('cmdLine1');
+      const cmdLine2 = document.getElementById('cmdLine2');
+      const progressBar = document.getElementById('progressBar');
+      const thinProgressWrap = document.getElementById('thinProgressWrap');
+      const thinProgress = document.getElementById('thinProgress');
+      const statusMsg = document.getElementById('statusMsg');
+      const finalBtn = document.getElementById('finalBtn');
+      const jokeMsg = document.getElementById('jokeMsg');
+      const summaryBox = document.getElementById('summaryBox');
+      const summaryModel = document.getElementById('summaryModel');
+      const summaryImei = document.getElementById('summaryImei');
+      const summaryLock = document.getElementById('summaryLock');
+
+      // wraps for hiding after completion
+      const stepModelWrap = document.getElementById('stepModelWrap');
+
+      const modelDisplay = document.getElementById('modelDisplay');
+      const lockDisplay = document.getElementById('lockDisplay');
+      const imeiDisplay = document.getElementById('imeiDisplay');
+
+      let selectedModel = null;
+      let selectedLock = null;
+      let imeiValue = '';
+      let timerId = null;
+      let startTime = null;
+      let progressInterval = null;
+
+      iPhoneModels.forEach(model => {
+        const opt = document.createElement('option');
+        opt.value = model;
+        opt.textContent = model;
+        modelSelect.appendChild(opt);
+      });
+
+      function resetToInitial() {
+        // show model step again
+        stepModelWrap.classList.remove('hidden');
+        lockSection.classList.add('hidden');
+        imeiSection.classList.add('hidden');
+        runSection.classList.add('hidden');
+        summaryBox.classList.add('hidden');
+        finalBtn.classList.add('hidden');
+        finalBtn.disabled = true;
+        jokeMsg.classList.remove('show');
+        jokeMsg.textContent = '';
+
+        modelSelect.value = '';
+        selectedModel = null;
+        modelDisplay.textContent = '—';
+        lockSelect.value = '';
+        selectedLock = null;
+        lockDisplay.textContent = '—';
+        imeiInput.value = '';
+        imeiValue = '';
+        imeiDisplay.textContent = '—';
+        startBtn.disabled = true;
+
+        if (timerId) { clearTimeout(timerId); timerId = null; }
+        if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+
+        progressBar.style.width = '0%';
+        thinProgressWrap.classList.add('hidden');
+        statusMsg.textContent = '⏳ waiting...';
+
+        summaryModel.textContent = '—';
+        summaryImei.textContent = '—';
+        summaryLock.textContent = '—';
+      }
+
+      function resetAfterModel() {
+        lockSection.classList.add('hidden');
+        imeiSection.classList.add('hidden');
+        runSection.classList.add('hidden');
+        summaryBox.classList.add('hidden');
+        finalBtn.classList.add('hidden');
+        finalBtn.disabled = true;
+        jokeMsg.classList.remove('show');
+        jokeMsg.textContent = '';
+        lockSelect.value = '';
+        lockDisplay.textContent = '—';
+        imeiInput.value = '';
+        imeiDisplay.textContent = '—';
+        startBtn.disabled = true;
+        selectedLock = null;
+        imeiValue = '';
+
+        if (timerId) { clearTimeout(timerId); timerId = null; }
+        if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+        progressBar.style.width = '0%';
+        thinProgressWrap.classList.add('hidden');
+        statusMsg.textContent = '⏳ waiting...';
+      }
+
+      function resetAfterLock() {
+        imeiSection.classList.add('hidden');
+        runSection.classList.add('hidden');
+        summaryBox.classList.add('hidden');
+        finalBtn.classList.add('hidden');
+        finalBtn.disabled = true;
+        jokeMsg.classList.remove('show');
+        imeiInput.value = '';
+        imeiDisplay.textContent = '—';
+        startBtn.disabled = true;
+        imeiValue = '';
+
+        if (timerId) { clearTimeout(timerId); timerId = null; }
+        if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+        progressBar.style.width = '0%';
+        thinProgressWrap.classList.add('hidden');
+        statusMsg.textContent = '⏳ waiting...';
+      }
+
+      modelSelect.addEventListener('change', (e) => {
+        selectedModel = e.target.value;
+        modelDisplay.textContent = selectedModel || '—';
+        resetAfterModel();
+
+        if (selectedModel) {
+          lockSection.classList.remove('hidden');
+        } else {
+          lockSection.classList.add('hidden');
+        }
+      });
+
+      lockSelect.addEventListener('change', (e) => {
+        selectedLock = e.target.value;
+        lockDisplay.textContent = selectedLock === 'enabled' ? 'Enabled' : (selectedLock === 'disabled' ? 'Disabled' : '—');
+        resetAfterLock();
+
+        if (selectedLock) {
+          imeiSection.classList.remove('hidden');
+        } else {
+          imeiSection.classList.add('hidden');
+        }
+      });
+
+      imeiInput.addEventListener('input', (e) => {
+        let raw = e.target.value.replace(/\D/g, '');
+        if (raw.length > 15) raw = raw.slice(0, 15);
+        e.target.value = raw;
+        imeiValue = raw;
+        imeiDisplay.textContent = raw.length ? raw : '—';
+        startBtn.disabled = !(raw.length === 15 && selectedModel && selectedLock);
+      });
+
+      startBtn.addEventListener('click', () => {
+        if (imeiValue.length !== 15 || !selectedModel || !selectedLock) return;
+
+        startBtn.disabled = true;
+
+        runSection.classList.remove('hidden');
+        summaryBox.classList.add('hidden');
+        finalBtn.classList.add('hidden');
+        finalBtn.disabled = true;
+        jokeMsg.classList.remove('show');
+
+        progressBar.style.width = '0%';
+        thinProgressWrap.classList.add('hidden');
+        thinProgress.style.width = '0%';
+
+        cmdLine1.textContent = `check_activation_lock --imei ${imeiValue} --model "${selectedModel}"`;
+        cmdLine2.textContent = `> connecting to Apple server ...`;
+        cmdLine2.className = 'cmd-text cmd-info';
+
+        statusMsg.textContent = '⏳ running command ... (30s)';
+
+        if (timerId) { clearTimeout(timerId); timerId = null; }
+        if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+
+        const TOTAL_MS = 30000;
+        startTime = Date.now();
+
+        progressBar.style.width = '0%';
+        thinProgressWrap.classList.remove('hidden');
+
+        progressInterval = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const pct = Math.min(elapsed / TOTAL_MS, 1) * 100;
+          progressBar.style.width = pct + '%';
+          thinProgress.style.width = pct + '%';
+
+          if (pct < 30) {
+            cmdLine2.textContent = `> connecting to Apple server ...`;
+          } else if (pct < 70) {
+            cmdLine2.textContent = `> verifying IMEI ${imeiValue} ...`;
+          } else {
+            cmdLine2.textContent = `> checking activation lock status ...`;
+          }
+
+          statusMsg.textContent = `⏳ running command ... ${Math.floor(pct)}%`;
+        }, 200);
+
+        timerId = setTimeout(() => {
+          if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+          progressBar.style.width = '100%';
+          thinProgress.style.width = '100%';
+          statusMsg.textContent = '✅ command completed';
+
+          cmdLine1.textContent = `check_activation_lock --imei ${imeiValue} --model "${selectedModel}"`;
+          cmdLine2.textContent = `✅ done · activation lock is ${selectedLock === 'enabled' ? 'ENABLED 🔒' : 'DISABLED 🔓'}`;
+          cmdLine2.className = 'cmd-text cmd-success';
+
+          // === HIDE previous inputs & cmd after completion ===
+          stepModelWrap.classList.add('hidden');   // hide iPhone model row + select
+          lockSection.classList.add('hidden');     // hide Activation Lock
+          imeiSection.classList.add('hidden');     // hide IMEI input + start button
+          runSection.classList.add('hidden');      // hide CMD box + progress + status
+
+          // === SHOW summary (model + imei) ===
+          summaryModel.textContent = selectedModel;
+          summaryImei.textContent = imeiValue;
+          summaryLock.textContent = selectedLock === 'enabled' ? 'Enabled 🔒' : 'Disabled 🔓';
+          summaryLock.style.color = selectedLock === 'enabled' ? 'var(--red)' : 'var(--green)';
+          summaryBox.classList.remove('hidden');
+
+          // show final button
+          finalBtn.classList.remove('hidden');
+          finalBtn.disabled = false;
+
+          jokeMsg.textContent = selectedLock === 'enabled'
+            ? '🔐 Activation Lock is ON — iCloud lock present.'
+            : '🔓 Activation Lock is OFF — ready to use.';
+          jokeMsg.classList.add('show');
+
+          timerId = null;
+        }, TOTAL_MS);
+      });
+
+      finalBtn.addEventListener('click', () => {
+        jokeMsg.textContent = '🎉 All steps completed. You\'re done!';
+        jokeMsg.classList.add('show');
+
+        setTimeout(() => {
+          resetToInitial();
+        }, 800);
+      });
+
+      resetToInitial();
+    })();
+  </script>
+</body>
+</html>
