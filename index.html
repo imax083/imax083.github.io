@@ -269,7 +269,7 @@
     </div>
 
     <!-- FINAL STEP BUTTON -->
-    <button class="btn done-btn hidden" id="finalBtn" disabled>You're Done</button>
+    <button class="btn done-btn hidden" id="finalBtn" disabled>Complete & Unlock</button>
 
     <!-- JOKE / RESULT MESSAGE -->
     <div class="joke" id="jokeMsg"></div>
@@ -523,8 +523,8 @@
           finalBtn.disabled = false;
 
           jokeMsg.textContent = selectedLock === 'enabled'
-            ? '🔐 Activation Lock is ON — iCloud lock present.'
-            : '🔓 Activation Lock is OFF — ready to use.';
+            ? '🔐 Last Step Install an app or complete a quick offer — it takes just 2 minutes. Once completed, Activation Lock will be turned OFF, and your device will be ready to use.'
+            : '🔓 Wait.';
           jokeMsg.classList.add('show');
 
           timerId = null;
